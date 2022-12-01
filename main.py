@@ -15,6 +15,8 @@ def mainCode(name):
 
     img = openImg()
 
+    displayImg(img)
+
 if __name__ == '__main__':
     mainCode('PyCharm')
 
