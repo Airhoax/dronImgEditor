@@ -85,16 +85,6 @@ def clickOnApp(event, x, y, flags, param):
 
 
 def selectAction(x, y):
-    if x < appImg.minX:
-        x = appImg.minX
-    elif x > appImg.maxX:
-        x = appImg.maxX
-
-    if y < appImg.minY:
-        y = appImg.minY
-    elif y > appImg.maxY:
-        y = appImg.maxY
-
     display = appImg.img.copy()
     actionButton = buttonCheck(x, y)
 
@@ -110,6 +100,16 @@ def selectAction(x, y):
 
 
 def selectArea(display, x, y):
+    if x < appImg.minX:
+        x = appImg.minX
+    elif x > appImg.maxX:
+        x = appImg.maxX
+
+    if y < appImg.minY:
+        y = appImg.minY
+    elif y > appImg.maxY:
+        y = appImg.maxY
+
     if mouse.mouseDownState == 3:
         cv.rectangle(display, (mouse.oldX, mouse.oldY), (x, y), (255, 0, 0), -1)
 
