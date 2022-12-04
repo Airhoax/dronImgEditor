@@ -52,6 +52,8 @@ def displayImg(img):
     display = newButton(screenWidth - 64, screenHeight - 64, screenWidth, screenHeight, 1, zoomOut, display)
     display = newButton(screenWidth - 64, screenHeight - 128, screenWidth, screenHeight - 64, 2, zoomIn, display)
 
+    img = fitScreenImg(img, display, True, screenWidth, screenHeight)
+
     global appImg
     appImg = display
 
@@ -65,29 +67,34 @@ def clickOnApp(event, x, y, flags, param):
     if event == cv.EVENT_LBUTTONDOWN:
         mouse.mouseDownState += 1
         mouse.checkMouseDownState()
-        selectArea(x, y)
+        selectAction(x, y)
 
 
-def selectArea(x, y):
+def selectAction(x, y):
     display = appImg.copy()
-    action = buttonCheck(x, y)
+    actionButton = buttonCheck(x, y)
 
-    if action != 0:
+    if actionButton != 0:
         global mouse
         mouse.mouseDownState = 1
-        selectButton(action)
+        selectButton(actionButton)
 
     else:
-        if mouse.mouseDownState == 3:
-            cv.rectangle(display, (mouse.oldX, mouse.oldY), (x, y), (255, 0, 0), -1)
-
-        elif mouse.mouseDownState == 2:
-            cv.circle(display, (x, y), 10, (255, 0, 0), -1)
-            mouse.oldX = x
-            mouse.oldY = y
+        display = selectArea(display, x, y)
 
     Update(display)
 
+
+def selectArea(display, x, y):
+    if mouse.mouseDownState == 3:
+        cv.rectangle(display, (mouse.oldX, mouse.oldY), (x, y), (255, 0, 0), -1)
+
+    elif mouse.mouseDownState == 2:
+        cv.circle(display, (x, y), 10, (255, 0, 0), -1)
+        mouse.oldX = x
+        mouse.oldY = y
+
+    return display
 
 def buttonCheck(x, y):
     if(len(buttons) > 0):
