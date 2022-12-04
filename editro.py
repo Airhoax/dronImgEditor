@@ -26,8 +26,18 @@ class Button:
         self.buttonFunction = buttonFunction
 
 
+class AppImg:
+    def __init__(self, img, minX, maxX, minY, maxY):
+        self.img = img
+        self.minX = minX
+        self.minY = minY
+        self.maxX = maxX
+        self.maxY = maxY
+
+
+
 mouse = Mouse(1, 0, 0)
-appImg = 1
+appImg = AppImg(1, 1, 1, 1, 1)
 buttons = []
 
 
@@ -52,10 +62,14 @@ def displayImg(img):
     display = newButton(screenWidth - 64, screenHeight - 64, screenWidth, screenHeight, 1, zoomOut, display)
     display = newButton(screenWidth - 64, screenHeight - 128, screenWidth, screenHeight - 64, 2, zoomIn, display)
 
-    img = fitScreenImg(img, display, True, screenWidth, screenHeight)
+    img, screenX, screenY = fitScreenImg(img, display, True, screenWidth, screenHeight)
 
     global appImg
-    appImg = display
+    appImg.img = display
+    appImg.minX = round((display.shape[1] - screenX) / 2)
+    appImg.maxX = appImg.minX + screenX
+    appImg.minY = round((display.shape[0] - screenY) / 2)
+    appImg.maxY = appImg.minY + screenY
 
     cv.imshow("output", display)
     cv.setMouseCallback("output", clickOnApp)
@@ -71,7 +85,17 @@ def clickOnApp(event, x, y, flags, param):
 
 
 def selectAction(x, y):
-    display = appImg.copy()
+    if x < appImg.minX:
+        x = appImg.minX
+    elif x > appImg.maxX:
+        x = appImg.maxX
+
+    if y < appImg.minY:
+        y = appImg.minY
+    elif y > appImg.maxY:
+        y = appImg.maxY
+
+    display = appImg.img.copy()
     actionButton = buttonCheck(x, y)
 
     if actionButton != 0:

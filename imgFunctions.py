@@ -41,4 +41,4 @@ def fitScreenImg(img, display, original, x, y):
     img = cv.resize(img, (imgSizeX, imgSizeY))
     display[minY: maxY, minX: maxX] = img
 
-    return display
+    return [display, imgSizeX, imgSizeY]
