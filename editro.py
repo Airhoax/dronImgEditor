@@ -91,7 +91,7 @@ def selectAction(x, y):
     if actionButton != 0:
         global mouse
         mouse.mouseDownState = 1
-        selectButton(actionButton)
+        display = selectButton(actionButton, display)
 
     else:
         display = selectArea(display, x, y)
